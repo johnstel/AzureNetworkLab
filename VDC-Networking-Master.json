@@ -64,7 +64,7 @@
         }
     },
     "variables": {
-        "baseURL": "https://raw.githubusercontent.com/Araffe/vdc-networking-lab/master/",
+        "baseURL": "https://raw.githubusercontent.com/johnstel/AzureNetworkLab/master/",
         "hubVnetTemplateURL": "[concat(variables('baseURL'), 'Hub-VNet.json')]",
         "spokeVnetTemplateURL": "[concat(variables('baseURL'), 'Spoke-VNet.json')]",
         "vnetPeeringHubTemplateURL": "[concat(variables('baseURL'), 'VNet-Peering-Hub.json')]",
