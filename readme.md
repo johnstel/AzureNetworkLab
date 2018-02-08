@@ -62,8 +62,8 @@ More information on VDCs can be found at the following link:
 
 Before proceeding with this lab, please make sure you have fulfilled all of the following prerequisites:
 
-- A valid subscription to Azure. If you don't currently have a subscription, consider setting up a free trial (https://azure.microsoft.com/en-gb/free/). Please note however that some free trial accounts have been found to have limits on the number of compute cores available - if this is the case, it may not be possible to create the virtual machines required for this lab (6 VMs).
-- Access to the Azure CLI 2.0. You can achieve this in one of two ways: either by installing the CLI on the Windows 10 Bash shell (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli), or by using the built-in Cloud Shell in the Azure portal - you can access this by clicking on the ">_" symbol in the top right corner of the portal.
+- A valid subscription to Azure. If you don't currently have a subscription, consider setting up a free trial (https://azure.microsoft.com/en-us/free/). Please note however that some free trial accounts have been found to have limits on the number of compute cores available - if this is the case, it may not be possible to create the virtual machines required for this lab (6 VMs).
+- Access to the Azure CLI 2.0. You can achieve this in one of two ways: either by installing the CLI on the Windows 10 Bash shell (https://docs.microsoft.com/en-us/cli/azure/install-azure-cli), or by using the built-in Cloud Shell in the Azure portal - you can access this by clicking on the ">_" symbol in the top right corner of the portal or connecting to (https://shell.azure.com).
 
 # Initial Lab Setup <a name="setup"></a>
 
@@ -85,10 +85,10 @@ The above command will provide a code as output. Open a browser and navigate to 
 **2)** Use the Azure CLI to create five resource groups: *VDC-Hub*, *VDC-Spoke1*, *VDC-Spoke2*, *VDC-OnPrem* and *VDC-NVA* . Note that the resource groups *must* be named exactly as shown here to ensure that the ARM templates deploy correctly. Use the following CLI command to achieve this:
 
 <pre lang="...">
-for rg in Hub Spoke1 Spoke2 OnPrem NVA; do az group create -l westeurope -n VDC-$rg; done
+for rg in Hub Spoke1 Spoke2 OnPrem NVA; do az group create -l eastus -n "VDC-$rg"; done
 </pre>
 
-**3)** Once the resource groups have been deployed, you can deploy the main lab environment into these using a set of pre-defined ARM templates. The templates are available at https://github.com/Araffe/vdc-networking-lab if you wish to learn more about how the lab is defined. Essentially, a single master template (*VDC-Networking-Master.json*) is used to call a number of other templates, which in turn complete the deployment of virtual networks, virtual machines, load balancers, availability sets and VPN gateways. The templates also deploy a simple Node.js application on the spoke virtual machines. Use the following CLI command to deploy the template:
+**3)** Once the resource groups have been deployed, you can deploy the main lab environment into these using a set of pre-defined ARM templates. The templates are available at https://github.com/johnstel/AzureNetworkLab if you wish to learn more about how the lab is defined. Essentially, a single master template (*VDC-Networking-Master.json*) is used to call a number of other templates, which in turn complete the deployment of virtual networks, virtual machines, load balancers, availability sets and VPN gateways. The templates also deploy a simple Node.js application on the spoke virtual machines. Use the following CLI command to deploy the template:
 
 <pre lang="...">
 az group deployment create --name VDC-Create -g VDC-Hub --template-uri https://raw.githubusercontent.com/johnstel/AzureNetworkLab/master/VDC-Networking-Master.json
