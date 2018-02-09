@@ -144,19 +144,23 @@ Note that each of the virtual networks resides in its own Azure resource group. 
 
 **1)** Use the Azure portal to explore the resources that have been created for you. Navigate to the various resource groups in turn to get an overall view of the resources deployed.
 
-![VDC-Spoke1 Resource Group Image](https://github.com/johnstel/AzureNetworkLab/blob/master/images/VDC-Spoke1-RG.jpg "VDC-Spoke1 Resource Group")
+![Resource Groups Image](https://github.com/johnstel/AzureNetworkLab/blob/master/images/resourceGroups.jpg "Resource Groups")
 
-**Figure 2:** VDC-Spoke1 Resource Group View
+**Figure 2:** Resource Groups View
 
 **Tip**: Select 'group by type' on the top right of the resource group view to group the resources together.
 
 **2)** Under the resource groups *VDC-Hub* and *VDC-OnPrem*, look at each of the virtual networks and the subnets created within each one. You will notice that *Hub_Vnet* and *OnPrem_VNet* have an additional subnet called *GatewaySubnet* - this is a special subnet used for the VPN gateway.
 
-**3)** Navigate to the *Spoke1-LB* load balancer in the VDC-Spoke1 resource group. From here, navigate to 'Backend Pools' - you will see that both virtual machines are configured as part of the backend pool for the load balancer, as shown in figure 3.
+**3)** Navigate to the *Spoke1-LB* load balancer in the VDC-Spoke1 resource group as shown in figure 3. From here, navigate to 'Backend Pools' - you will see that both virtual machines are configured as part of the backend pool for the load balancer, as shown in figure 4.
+
+![VDC-Spoke1 Resource Group Image](https://github.com/johnstel/AzureNetworkLab/blob/master/images/VDC-Spoke1-RG.jpg "VDC-Spoke1 Resource Group")
+
+**Figure 3:** VDC-Spoke1 Resource Group View
 
 ![LB Backend Pools](https://github.com/johnstel/AzureNetworkLab/blob/master/images/BackendPools.JPG "LB Backend Pools")
 
-**Figure 3:** Load Balancer Backend Pools View
+**Figure 4:** Load Balancer Backend Pools View
 
 **4)** Under the load balancer, navigate to 'Load Balancing Rules'. Here, you will see that we have a single rule configured (*DemoAppRule*) that maps incoming HTTP requests to port 3000 on the backend (our simple Node.js application listens on port 3000).
 
@@ -188,17 +192,17 @@ At this point, we can start to verify the connectivity we have set up. One of th
 
 **6)** Using the Azure portal, navigate to the *OnPrem_VM1-nic* object under the VDC-OnPrem resource group. This object is the network interface associated with the OnPrem_VM virtual machine.
 
-**7)** Under 'Support + Troubleshooting', select 'Effective Routes'. You should see an entry for 'virtual network gateway', specifying an address range of 10.101.0.0/16, as shown in figure 4.
+**7)** Under 'Support + Troubleshooting', select 'Effective Routes'. You should see an entry for 'virtual network gateway', specifying an address range of 10.101.0.0/16, as shown in figure 5.
 
 ![Effective Routes](https://github.com/johnstel/AzureNetworkLab/blob/master/images/EffectiveRoutes1.JPG "Effective Routes")
 
-**Figure 4:** OnPrem_VM Effective Routes
+**Figure 5:** OnPrem_VM Effective Routes
 
-Figure 5 shows a diagram explaining what we see when we view the effective routes of OnPrem_VM.
+Figure 6 shows a diagram explaining what we see when we view the effective routes of OnPrem_VM.
 
 ![Routing from OnPrem_VM](https://github.com/johnstel/AzureNetworkLab/blob/master/images/EffectiveRoutes2.jpg "Routing from OnPrem_VM1")
 
-**Figure 5:** Routing from OnPrem_VM1
+**Figure 6:** Routing from OnPrem_VM1
 
 Next, let's move on to configuring our Cisco Network Virtual Appliances.
 
@@ -264,11 +268,11 @@ az network public-ip list -g VDC-OnPrem --query [*].[name,ipAddress]
 ssh labuser@10.101.1.4
 </pre>
 
-This step should succeed, which proves connectivity between the On Premises and Hub VNets using the VPN connection. Figure 6 shows the connection we have just made.
+This step should succeed, which proves connectivity between the On Premises and Hub VNets using the VPN connection. Figure 7 shows the connection we have just made.
 
 ![SSH to NVA](https://github.com/johnstel/AzureNetworkLab/blob/master/images/SSHtoNVA.jpg "SSH to NVA")
 
-**Figure 6:** SSH from OnPrem_VM1 to vdc-csr-1
+**Figure 7:** SSH from OnPrem_VM1 to vdc-csr-1
 
 **8)** Exit the SSH session to the CSR1000V and then exit the SSH session to the OnPrem virtual machine. Find the internal IP address of a virtual machine's NIC in VDC-Spoke1, either by using the portal or any of the following CLI 2.0 commands:
 
@@ -291,11 +295,11 @@ This attempt will fail - the reason for this is that we do not yet have the corr
 
 ## 2.3: Configure User Defined Routes <a name="udr"></a>
 
-In this section, we will configure a number of *User Defined Routes*. A UDR in Azure is a routing table that you as the user define, potentially overriding the default routing that Azure sets up for you. UDRs are generally required any time a Network Virtual Appliance (NVA) is deployed, such as the Cisco CSR router we are using in our lab. The goal of this exercise is to allow traffic to flow from VMs residing in the Spoke VNets, to the VM in the On Premises VNet. This traffic will flow through the Cisco CSR router in the Hub VNet. The diagram in figure 7 shows what we are trying to achieve in this section.
+In this section, we will configure a number of *User Defined Routes*. A UDR in Azure is a routing table that you as the user define, potentially overriding the default routing that Azure sets up for you. UDRs are generally required any time a Network Virtual Appliance (NVA) is deployed, such as the Cisco CSR router we are using in our lab. The goal of this exercise is to allow traffic to flow from VMs residing in the Spoke VNets, to the VM in the On Premises VNet. This traffic will flow through the Cisco CSR router in the Hub VNet. The diagram in figure 8 shows what we are trying to achieve in this section.
 
 ![User Defined Routes](https://github.com/johnstel/AzureNetworkLab/blob/master/images/UDR.jpg "User Defined Routes")
 
-**Figure 7:** User Defined Routes
+**Figure 8:** User Defined Routes
 
 We'll create our first User Defined Route using the Azure portal, with subsequent UDRs configured using the Azure CLI.
 
@@ -313,11 +317,11 @@ Click 'Submit' to create the route. Repeat the process for Spoke 2 as follows:
 - Address Prefix: *10.2.0.0/16*
 - Next Hop Type: *Virtual Network Gateway*
 
-Figure 8 shows the route creation screen.
+Figure 9 shows the route creation screen.
 
 ![Defining UDRs](https://github.com/johnstel/AzureNetworkLab/blob/master/images/UDR2.jpg "Defining UDRs")
 
-**Figure 8:** Defining UDRs
+**Figure 9:** Defining UDRs
 
 **3)** We now need to associate the UDR with a specific subnet. Click on 'Subnets' and then 'Associate'. Select the VNet 'OnPrem\_Vnet' and then the subnet 'OnPrem\_Vnet-Subnet1'. Click OK to associate the UDR to the subnet.
 
@@ -373,11 +377,11 @@ Although we have all the routing we need configured, this connectivity is still 
 
 It turns out that there is an additional setting we must configure on the VNet peerings to allow this type of hub and spoke connectivity to happen. Follow these steps to make the required changes:
 
-**3)** In the Azure portal, navigate to *Spoke1_VNet* in the 'VDC-Spoke1' resource group. Select 'peerings' and then select the 'to-Hub_Vnet' peering. You'll see that the option entitled *Use Remote Gateways* is unchecked. Checking this option allows the VNet to use a gateway in a *remote* virtual network - as we need our Spoke VNets to use a gateway residing in the Hub VNet, this is exactly what we need, so check the box as shown in figure 9.
+**3)** In the Azure portal, navigate to *Spoke1_VNet* in the 'VDC-Spoke1' resource group. Select 'peerings' and then select the 'to-Hub_Vnet' peering. You'll see that the option entitled *Use Remote Gateways* is unchecked. Checking this option allows the VNet to use a gateway in a *remote* virtual network - as we need our Spoke VNets to use a gateway residing in the Hub VNet, this is exactly what we need, so check the box as shown in figure 10.
 
 ![Use Remote GW](https://github.com/johnstel/AzureNetworkLab/blob/master/images/UseRemoteGW.JPG "Use Remote GW")
 
-**Figure 9:** Use Remote Gateway Option
+**Figure 10:** Use Remote Gateway Option
 
 **4)** From within the OnPrem_VM1 virtual machine, try to SSH to the Spoke VM once more. The connection attempt should now succeed.
 
@@ -419,7 +423,7 @@ Our NSG will define two inbound rules - one for HTTP and another for TCP port 30
 
 ![NSG Rule1](https://github.com/johnstel/AzureNetworkLab/blob/master/images/NSG1.jpg "NSG Rule1")
 
-**Figure 10:** Network Security Group - HTTP Rule
+**Figure 11:** Network Security Group - HTTP Rule
 
 **3)** Add another rule with the following parameters:
 
@@ -441,7 +445,7 @@ Our NSG will define two inbound rules - one for HTTP and another for TCP port 30
 
 ![NSG Associate Subnet](https://github.com/johnstel/AzureNetworkLab/blob/master/images/NSG2.jpg "NSG Associate Subnet")
 
-**Figure 11:** Network Security Group - Associating with a Subnet
+**Figure 12:** Network Security Group - Associating with a Subnet
 
 **6)** SSH back into the OnPrem-VM1 virtual machine from your terminal emulator (this will refresh the NSG rules for the associated NIC). From this VM, attempt to SSH to the first Spoke1 VM:
 
@@ -469,13 +473,13 @@ Azure Security Center is a feature built in to Azure which allows administrators
 
 ![Azure Security Center](https://github.com/johnstel/AzureNetworkLab/blob/master/images/SecCenter.jpg "Azure Security Center")
 
-**Figure 12:** Azure Security Center - Overview Page
+**Figure 13:** Azure Security Center - Overview Page
 
 **3)** Click on 'Recommendations' in the Security Center menu. You will see a list of recommendations relating to various areas of the environment - for example, the need to add Network Security Groups on subnets and VMs, or the recommendation to apply disk encryption to VMs.
 
 ![Azure Security Recommendations](https://github.com/johnstel/AzureNetworkLab/blob/master/images/SecRecommendations.jpg "Azure Security Recommendations")
 
-**Figure 13:** Azure Security Center - Recommendations
+**Figure 14:** Azure Security Center - Recommendations
 
 **4)** Explore other areas of the Security Center - click through the Compute, Networking and Storage sections to see recommendations specific to these areas.
 
@@ -491,7 +495,7 @@ Azure resource policies are used to place restrictions on what actions can be ta
 
 ![Azure Resource Policy Example](https://github.com/johnstel/AzureNetworkLab/blob/master/images/armpolicies1.jpg "Azure Resource Policy Example")
 
-**Figure 14:** Example Resource Policy - Allowed Resource Types
+**Figure 15:** Example Resource Policy - Allowed Resource Types
 
 **4)** Switch back to the 'Assignments' tab in the right hand pane and click 'Add'.
 
@@ -597,7 +601,7 @@ Azure Policy is a feature that expands upon the functionality explored in this s
 
 ![Azure Policy - Compliance](https://github.com/johnstel/AzureNetworkLab/blob/master/images/PolicyCompliance.jpg "Azure Policy - Compliance")
 
-**Figure 15:** Azure Policy - Compliance View
+**Figure 16:** Azure Policy - Compliance View
 
 **7)** Under the 'Assignments' page, click on the '...' on the right hand side of the assignment and select 'Delete Assignment'.
 
@@ -617,19 +621,19 @@ Before we can use the tools in this section, we must first enable Network Watche
 
 ![Enabling Network Watcher](https://github.com/johnstel/AzureNetworkLab/blob/master/images/NetWatcher1.jpg "Enabling Network Watcher")
 
-**Figure 16:** Enabling Network Watcher
+**Figure 17:** Enabling Network Watcher
 
 **3)** On the left hand side of screen under 'Monitoring', click on 'Topology'. Select your subscription and then the resource group 'VDC-Hub' and 'Hub_Vnet'. You will see a graphical representation of the topology on the screen:
 
 ![Network Topology](https://github.com/johnstel/AzureNetworkLab/blob/master/images/NetWatcherTopo.jpg "Network Topology")
 
-**Figure 17:** Network Topology View in Network Watcher
+**Figure 18:** Network Topology View in Network Watcher
 
 **4)** A useful feature of Network Watcher is the ability to view network related subscription limits and track your resource utilisation against these. In the left hand menu, select 'Network Subscription Limit'. You will see a list of resources, including virtual networks, public IP addresses and more:
 
 ![Network Subscription Limits](https://github.com/johnstel/AzureNetworkLab/blob/master/images/SubLimits.jpg "Network Subscription Limits")
 
-**Figure 18:** Network Related Subscription Limits
+**Figure 19:** Network Related Subscription Limits
 
 ## 4.2: NSG Flow Logs <a name="nsgflowlogs"></a>
 
@@ -653,7 +657,7 @@ az storage account create --name storage-account-name -g VDC-Hub --sku Standard_
 
 ![NSG Flow Log Settings](https://github.com/johnstel/AzureNetworkLab/blob/master/images/FlowLogs1.jpg "NSG Flow Log Settings")
 
-**Figure 19:** NSG Flow Log Settings
+**Figure 20:** NSG Flow Log Settings
 
 **4)** In order to view data from the NSG logs, we must initiate some traffic that will flow through the NSG. SSH to the OnPrem_VM1 virtual machine as described earlier in the lab. From here, use the curl command to view the demo app on Spoke1\_VM1 (through the load balancer) and attempt to SSH to the same VM (this will fail):
 
@@ -666,7 +670,7 @@ ssh labuser@10.1.1.5
 
 ![NSG Log Download](https://github.com/johnstel/AzureNetworkLab/blob/master/images/NSGLogs.jpg "NSG Log Download")
 
-**Figure 20:** NSG Flow Log Download
+**Figure 21:** NSG Flow Log Download
 
 **6)** Open the PT1H.json file in an editor on your local machine (Visual Studio Code is a good choice - available as a free download from https://code.visualstudio.com/). The file should show a number of flow entries which can be inspected. Let's start by looking for an entry for TCP port 80 from our OnPrem_VM1 machine to the Spoke1 load balancer IP address. You can search for the IP address '10.102.1.4' to see entries associated with OnPrem\_VM1.
 
@@ -708,7 +712,7 @@ Another useful feature of Network Watcher is the ability to trace the next hop f
 
 ![Next Hop Tracking](https://github.com/johnstel/AzureNetworkLab/blob/master/images/NextHop.jpg "Next Hop Tracking")
 
-**Figure 21:** Next Hop Tracking
+**Figure 22:** Next Hop Tracking
 
 **4)** Try other combinations of IP address / virtual machine. For example, reverse the IP addresses used in the previous step.
 
@@ -720,13 +724,13 @@ Azure Monitor is a tool that provides central monitoring of most Azure services,
 
 ![Azure Monitor Activity Log](https://github.com/johnstel/AzureNetworkLab/blob/master/images/AzMon1.jpg "Azure Monitor Activity Log")
 
-**Figure 22:** Azure Monitor Activity Log
+**Figure 23:** Azure Monitor Activity Log
 
 **2)** In the Azure Monitor menu on the left, select 'Metrics'. At the top of the screen, select the 'VDC-OnPrem' resource group and then the 'OnPrem1_VM' virtual machine in the Resource drop-down menu. Under the 'Metrics' menu, select 'Host Percentage CPU' to view the CPU metrics for this VM.
 
 ![Azure Monitor CPU Metrics](https://github.com/johnstel/AzureNetworkLab/blob/master/images/AzMonCPU.jpg "Azure Monitor CPU Metrics")
 
-**Figure 23:** Azure Monitor CPU Metrics
+**Figure 24:** Azure Monitor CPU Metrics
 
 **3)** For all types of metric displayed, it is possible to configure alerts when a specific threshold is reached. In the CPU metric view, click on 'Add Metric Alert' at the top of the screen. Use the following parameters to configure the alerting rule:
 
@@ -752,7 +756,7 @@ stress: info: [61727] dispatching hogs: 50 cpu, 0 io, 0 vm, 0 hdd
 
 ![Azure Monitor CPU Alert](https://github.com/johnstel/AzureNetworkLab/blob/master/images/AzMonAlert.jpg "Azure Monitor CPU Alert")
 
-**Figure 24:** Azure Monitor CPU Alert
+**Figure 25:** Azure Monitor CPU Alert
 
 **7)** Stop the Stress program. After another few minutes you should receive another mail informing you that the CPU percentage has reduced.
 
@@ -764,7 +768,7 @@ In this lab, we will create three groups of users, as shown in figure 23:
 
 ![VDC Users and Groups](https://github.com/johnstel/AzureNetworkLab/blob/master/images/Identity.jpg "VDC Users and Groups")
 
-**Figure 25:** VDC Lab Users and Groups
+**Figure 26:** VDC Lab Users and Groups
 
 The groups will have the following rights:
 
@@ -782,7 +786,7 @@ We'll start by configuring a number of users and groups.
 
 ![AAD Domain Name](https://github.com/johnstel/AzureNetworkLab/blob/master/images/DomainName.jpg "AAD Domain Name")
 
-**Figure 26:** Azure AD Domain Name
+**Figure 27:** Azure AD Domain Name
 
 **2)** Create three users (Fred, Bob and Dave) using the Azure CLI. Note that you will need to substitute your own domain in the user principal name.
 
@@ -866,7 +870,7 @@ Now that we have our users and groups in place, it's time to make use of them by
 
 ![Hub RBAC](https://github.com/johnstel/AzureNetworkLab/blob/master/images/Hub-RBAC.jpg "Hub RBAC")
 
-**Figure 27:** Hub Role Based Access Control
+**Figure 28:** Hub Role Based Access Control
 
 **4)** Navigate to the 'VDC-Spoke1' resource group and select 'IAM'. Click 'Add' and then select the 'Virtual Machine Contributor' role. Add the AppDev group. Repeat this step for the 'VDC-Spoke2' resource group.
 
