@@ -1,4 +1,4 @@
-# Azure Virtual Data Center Lab
+# Azure Virtual Data Center Lab - John.Stelmaszek@micrososft.com
 
 # Contents
 
@@ -144,7 +144,7 @@ Note that each of the virtual networks resides in its own Azure resource group. 
 
 **1)** Use the Azure portal to explore the resources that have been created for you. Navigate to the various resource groups in turn to get an overall view of the resources deployed.
 
-![Resource Groups Image](https://github.com/johnstel/AzureNetworkLab/blob/master/images/resourceGroups.jpg "Resource Groups")
+![Resource Groups Image](https://github.com/johnstel/AzureNetworkLab/blob/master/images/resourceGroups.JPG "Resource Groups")
 
 **Figure 2:** Resource Groups View
 
