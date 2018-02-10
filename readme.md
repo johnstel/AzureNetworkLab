@@ -1,4 +1,4 @@
-# Azure Virtual Data Center Lab - John.Stelmaszek@microssoft.com
+# Azure Virtual Data Center Lab - John.Stelmaszek@microsoft.com
 
 # Contents
 
@@ -568,7 +568,7 @@ az policy definition delete --name EnforceNaming
 
 **Bonus Section: Use Azure Policy to Identify Non-Compliant Resources**
 
-_Note that currently (October 2017), the functionality referenced in this section is in Limited Preview, therefore it must be explicitly enabled on your subscription before it can be used. To do this, browse to https://aka.ms/getpolicy and click on 'sign up'. Select your subscription and then 'register'._
+_Note that currently (February 2018), the functionality referenced in this section is in Public Preview, therefore it must be explicitly enabled on your subscription before it can be used. To do this, browse to https://aka.ms/getpolicy and click on 'sign up'. Select your subscription and then 'register'._
 
 Azure Policy is a feature that expands upon the functionality explored in this section. In addition to the ability to define and assign resource policies, Azure Policy allows you to identify existing resources within a subscription or resource that are not compliant against the configured policies. In this section, we will define a new resource policy and assign it to the VDC-Hub resource group - we will then use Azure Policy to view non-compliant resources within this group.
 
@@ -723,7 +723,7 @@ Another useful feature of Network Watcher is the ability to trace the next hop f
 
 Azure Monitor is a tool that provides central monitoring of most Azure services, designed to give you infrastructure level diagnostics about a service and the surrounding environment. In this section of the lab, we will use Azure Monitor to look at metrics on a resource and create an alert to receive an email when a CPU threshold is crossed.
 
-**1)** Start by using the Azure portal to navigate to the Azure Monitor view by expanding the left hand main menu and selecting 'Monitor'. If it is not shown, select 'More Services' and search for it. The initial view is the Activity Log. This shows a filterable view of all activity in your subscription - you can filter based on timespan, event severity, resource type and operation. Modify some of the filter fields in this screen to narrow down the search criteria.
+**1)** Start by using the Azure portal to navigate to the Azure Monitor view by expanding the left hand main menu and selecting 'Monitor'. If it is not shown, select 'More Services' and search for it. The change your view to the the *Activity Log*. This shows a filterable view of all activity in your subscription - you can filter based on timespan, event severity, resource type and operation. Modify some of the filter fields in this screen to narrow down the search criteria.
 
 ![Azure Monitor Activity Log](https://github.com/johnstel/AzureNetworkLab/blob/master/images/AzMon1.jpg "Azure Monitor Activity Log")
 
