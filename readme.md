@@ -440,8 +440,8 @@ Our NSG will define two inbound rules - one for HTTP and another for TCP port 30
 
 - Name: *Deny-All*
 - Priority: *120*
-- Source port range: *(/*) Any*
-- Destination port range: *(/*)Any*
+- Source port range: *(\*) Any*
+- Destination port range: *(\*) Any*
 - Action: *Deny*
 
 **5)** Select 'Network Interfaces'. Click the 'Associate' button and choose 'vdc-csr-1-Nic0'.
