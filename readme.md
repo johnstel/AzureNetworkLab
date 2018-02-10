@@ -114,7 +114,7 @@ Once the template deployment has succeeded, you can proceed to the deployment of
 
 **3)** Name the virtual machine 'vdc-csr-1' and use the username and password *labuser / M1crosoft123*. Make sure the SKU '16.6' and 'VDC-NVA' resource group is selected the ensure 'East US' is the location.
 
-**4)** In the next step, select 'storage account' and create a storage account with a unique name by adding your phone number (you will receive an error if the name is not unique). Leave the storage as 'locally redundant'.  You must also remove any charecters that are not letters or numbers.
+**4)** In the next step, select 'storage account' and create a storage account with a unique name by adding your phone number (you will receive an error if the name is not unique). Leave the storage as 'locally redundant'.  You must also remove any character that are not letters or numbers.
 
 ![CSR1000 Disk Config Image](https://github.com/johnstel/AzureNetworkLab/blob/master/images/CSR1000DiskConfig.jpg "CSR1000 Disk Config")
 
@@ -631,7 +631,7 @@ Before we can use the tools in this section, we must first enable Network Watche
 
 **Figure 18:** Network Topology View in Network Watcher
 
-**4)** A useful feature of Network Watcher is the ability to view network related subscription limits and track your resource utilisation against these. In the left hand menu, select 'Network Subscription Limit'. You will see a list of resources, including virtual networks, public IP addresses and more:
+**4)** A useful feature of Network Watcher is the ability to view network related subscription limits and track your resource utilization against these. In the left hand menu, select 'Network Subscription Limit'. You will see a list of resources, including virtual networks, public IP addresses and more:
 
 ![Network Subscription Limits](https://github.com/johnstel/AzureNetworkLab/blob/master/images/SubLimits.jpg "Network Subscription Limits")
 
