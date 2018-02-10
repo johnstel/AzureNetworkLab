@@ -108,13 +108,15 @@ VDC-Create         2017-08-07T08:30:02.786296+00:00  Succeeded
 
 Once the template deployment has succeeded, you can proceed to the deployment of the Cisco CSR1000V, as follows:
 
-**1)** Using the Azure portal, navigate to the 'VDC-NVA' resource group. Click on the 'Add' button at the top of the screen and enter 'Cisco CSR' in the search box. Press enter.
+**1)** Using the Azure portal, navigate to the 'VDC-NVA' resource group. Click on the 'Add' button at the top of the screen and enter 'Cisco CSR 1000v - XE 16.x' in the search box. Press enter.
 
-**2)** Select the option entitled 'Cisco CSR 1000v - XE 16.6 Deployment with 2 NICs' and then select create.
+**2)** Select the option titled 'Cisco CSR 1000v - XE 16.x with 2 NICs' and then select create.
 
-**3)** Name the virtual machine 'vdc-csr-1' and use the username and password *labuser / M1crosoft123*. Make sure the 'VDC-NVA' resource group is selected and West Europe is the location.
+**3)** Name the virtual machine 'vdc-csr-1' and use the username and password *labuser / M1crosoft123*. Make sure the SKU '16.6' and 'VDC-NVA' resource group is selected the ensure 'East US' is the location.
 
-**4)** In the next step, select 'storage account' and create a storage account with a unique name (you will receive an error if the name is not unique). Leave the storage as 'locally redundant'.
+**4)** In the next step, select 'storage account' and create a storage account with a unique name by adding your phone number (you will receive an error if the name is not unique). Leave the storage as 'locally redundant'.  You must also remove any charecters that are not letters or numbers.
+
+![CSR1000 Disk Config Image](https://github.com/johnstel/AzureNetworkLab/blob/master/images/CSR1000DiskConfig.jpg "CSR1000 Disk Config")
 
 **5)** Select 'Public IP address' and call the IP address 'csr-pip'. Use the default options (Basic SKU and Dynamic Assignment).
 
