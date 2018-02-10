@@ -1,4 +1,4 @@
-# Azure Virtual Data Center Lab - John.Stelmaszek@micrososft.com
+# Azure Virtual Data Center Lab - John.Stelmaszek@microssoft.com
 
 # Contents
 
@@ -114,7 +114,7 @@ Once the template deployment has succeeded, you can proceed to the deployment of
 
 **3)** Name the virtual machine 'vdc-csr-1' and use the username and password *labuser / M1crosoft123*. Make sure the SKU '16.6' and 'VDC-NVA' resource group is selected the ensure 'East US' is the location.
 
-**4)** In the next step, select 'storage account' and create a storage account with a unique name by adding your phone number (you will receive an error if the name is not unique). Leave the storage as 'locally redundant'.  You must also remove any character that are not letters or numbers.
+**4)** In the next step, select 'storage account' and create a storage account with a unique name by adding your phone number (you will receive an error if the name is not unique). Leave the storage as 'locally redundant'.  You must also remove any characters that are not letters or numbers.
 
 ![CSR1000 Disk Config Image](https://github.com/johnstel/AzureNetworkLab/blob/master/images/CSR1000DiskConfig.jpg "CSR1000 Disk Config")
 
@@ -154,7 +154,7 @@ Note that each of the virtual networks resides in its own Azure resource group. 
 
 **2)** Under the resource groups *VDC-Hub* and *VDC-OnPrem*, look at each of the virtual networks and the subnets created within each one. You will notice that *Hub_Vnet* and *OnPrem_VNet* have an additional subnet called *GatewaySubnet* - this is a special subnet used for the VPN gateway.
 
-**3)** Navigate to the *Spoke1-LB* load balancer in the VDC-Spoke1 resource group as shown in figure 3. From here, navigate to 'Backend Pools' - you will see that both virtual machines are configured as part of the backend pool for the load balancer, as shown in figure 4.
+**3)** Navigate to the *Spoke1-LB* load balancer in the VDC-Spoke1 resource group as shown in figure 3. From here, navigate to 'Backend Pools' - If you expand (*BackendPool*) you will see that both virtual machines are configured as part of the backend pool for the load balancer.  Next click on the word (*BackendPool*) to see the load balancing rules as shown in figure 4.
 
 ![VDC-Spoke1 Resource Group Image](https://github.com/johnstel/AzureNetworkLab/blob/master/images/VDC-Spoke1-RG.jpg "VDC-Spoke1 Resource Group")
 
@@ -210,13 +210,13 @@ Next, let's move on to configuring our Cisco Network Virtual Appliances.
 
 ## 2.2: Configure Cisco CSR1000V <a name="cisco"></a>
 
-One of the requirements of many enterprise organisations is to provide a secure perimeter or DMZ environment using third party routers or firewall devices. Azure allows for this requirement to be met through the use of third party Network Virtual Appliances (NVAs). An NVA is essentially a virtual machine that runs specialised software, typically from a network equipment manufacturer, and that provides routing or firewall functionality within the Azure environment.
+One of the requirements of many enterprise organizations is to provide a secure perimeter or DMZ environment using third party routers or firewall devices. Azure allows for this requirement to be met through the use of third party Network Virtual Appliances (NVAs). An NVA is essentially a virtual machine that runs specialized software, typically from a network equipment manufacturer, and that provides routing or firewall functionality within the Azure environment.
 
-In our VDC environment, we are using Cisco CSR1000V routers in the Hub virtual network - CSR stands for *Cloud Services Router* and is a virtualised Cisco router running IOS-XE software. The CSR1000V is a fully featured Cisco router that supports most routing functionality, such as OSPF and BGP routing, IPSec VPNs and Zone Based Firewalls.
+In our VDC environment, we are using Cisco CSR1000V routers in the Hub virtual network - CSR stands for *Cloud Services Router* and is a virtualized Cisco router running IOS-XE software. The CSR1000V is a fully featured Cisco router that supports most routing functionality, such as OSPF and BGP routing, IPSec VPNs and Zone Based Firewalls.
 
 In the initial lab setup, you provisioned the CSR1000V router in the Hub virtual network, however it must now be configured in order to route traffic. Follow the steps in this section to configure the CSR1000V.
 
-**1)** To log on to the CSR1000V, you'll need to obtain the public IP address assigned to it. You can obtain this using the Azure portal (navigate to the *VDC-NVA* resource group and inspect the object named 'csr-pip'). Alternatively, you can use the Azure CLI to obtain the public IP address, as follows:
+**1)** To log on to the CSR1000V, you'll need to obtain the public IP address assigned to it. You can obtain this using the Azure portal (navigate to the *VDC-NVA* resource group and inspect the object named (*'csr-pip'*)). Alternatively, you can use the Azure CLI to obtain the public IP address, as follows:
 
 <pre lang="...">
 <b>az network public-ip list -g VDC-NVA --query [*].[name,ipAddress]</b>
@@ -242,6 +242,7 @@ conf t
 vdc-csr-1(config)#interface gig1
 vdc-csr-1(config-if)#ip address dhcp
 vdc-csr-1(config-if)#no shut
+vdc-csr-1(config-if)#exit
 vdc-csr-1(config)#interface gig2
 vdc-csr-1(config-if)#ip address dhcp
 vdc-csr-1(config-if)#no shut
@@ -305,7 +306,7 @@ In this section, we will configure a number of *User Defined Routes*. A UDR in A
 
 We'll create our first User Defined Route using the Azure portal, with subsequent UDRs configured using the Azure CLI.
 
-**1)** In the Azure portal, navigate to the *VDC-OnPrem* resource group. Click 'Add' and then search for 'Route Table'. Select this and then create a new route table named *OnPrem-UDR*. Once complete, navigate to the newly created UDR in the VDC-OnPrem resource group and select it.
+**1)** In the Azure portal, navigate to the *VDC-OnPrem* resource group. Click 'Add' and then search for 'Route Table'. Select this and then create a new route table named *OnPrem-UDR* in the *VDC-OnPrem* resource group. Once complete, navigate to the newly created UDR in the VDC-OnPrem resource group and select it.
 
 **2)** Click on 'Routes' and then 'Add'. Create a new route with the following parameters:
 
@@ -413,7 +414,7 @@ An NSG is a list of user-defined security rules that allows or denies traffic on
 
 Our NSG will define two inbound rules - one for HTTP and another for TCP port 3000. We'll create this NSG within our Hub VNet in order to enforce traffic at a central location. This NSG will be applied at the first CSR1000V interface (i.e. the interface where traffic would come in from the OnPrem VNet).
 
-**1)** In the Azure portal under the resource group VDC-Hub, click 'Add' and search for 'Network Security Group'. Create a new NSG named *Hub-NSG*.
+**1)** In the Azure portal under the resource group VDC-Hub, click 'Add' and search for 'Network Security Group'. Create a new NSG named *Hub-NSG* in the *VDC-Hub* resource group.
 
 **2)** Navigate to the newly created NSG and select it. Select 'Inbound Security Rules'. Click 'Add' to add a new rule and then click the 'Advanced' button. Use the following parameters:
 
@@ -439,8 +440,8 @@ Our NSG will define two inbound rules - one for HTTP and another for TCP port 30
 
 - Name: *Deny-All*
 - Priority: *120*
-- Source port range: *Any*
-- Destination port range: *Any*
+- Source port range: *(/*) Any*
+- Destination port range: *(/*)Any*
 - Action: *Deny*
 
 **5)** Select 'Network Interfaces'. Click the 'Associate' button and choose 'vdc-csr-1-Nic0'.
