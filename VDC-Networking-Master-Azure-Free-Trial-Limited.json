@@ -71,7 +71,7 @@
         "vnetPeeringSpokeTemplateURL": "[concat(variables('baseURL'), 'VNet-Peering-Spoke.json')]",
         "vpnGwTemplateURL": "[concat(variables('baseURL'), 'vpn-gw.json')]",
         "singleVMTemplateURL": "[concat(variables('baseURL'), 'Single-VM.json')]",
-        "multiVMTemplateURL": "[concat(variables('baseURL'), 'MultiVM-LoadBalanced.json')]",
+        "multiVMTemplateURL": "[concat(variables('baseURL'), 'MultiVM-LoadBalanced-Azure-Free-Trial-Limited.json')]",
         "nvaTemplateURL": "[concat(variables('baseURL'), 'Deploy-NVAs.json')]",
         "hubVnetTemplate": {
             "vnetName": {
