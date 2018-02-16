@@ -31,11 +31,11 @@
       "type": "string"
     },
     "spokeNicCount": {
-      "defaultValue": 2,
+      "defaultValue": 1,
       "type": "int"
     },
     "vmCount": {
-      "defaultValue": 2,
+      "defaultValue": 1,
       "type": "int"
     },
     "vmType": {
