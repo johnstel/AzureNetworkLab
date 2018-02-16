@@ -88,8 +88,14 @@ The above command will provide a code as output. Open a browser and navigate to 
 for rg in Hub Spoke1 Spoke2 OnPrem NVA; do az group create -l eastus -n "VDC-$rg"; done
 </pre>
 
-**3)** Once the resource groups have been deployed, you can deploy the main lab environment into these using a set of pre-defined ARM templates. The templates are available at https://github.com/johnstel/AzureNetworkLab if you wish to learn more about how the lab is defined. Essentially, a single master template (*VDC-Networking-Master.json*) is used to call a number of other templates, which in turn complete the deployment of virtual networks, virtual machines, load balancers, availability sets and VPN gateways. The templates also deploy a simple Node.js application on the spoke virtual machines. Use the following CLI command to deploy the template:
+**3)** Once the resource groups have been deployed, you can deploy the main lab environment into these using a set of pre-defined ARM templates. The templates are available at https://github.com/johnstel/AzureNetworkLab if you wish to learn more about how the lab is defined. Essentially, a single master template (*VDC-Networking-Master.json*) is used to call a number of other templates, which in turn complete the deployment of virtual networks, virtual machines, load balancers, availability sets and VPN gateways. The templates also deploy a simple Node.js application on the spoke virtual machines. Use the following CLI command to deploy the template. Please use the appropriate command based on your subscription type:
 
+<b>\*\*\*\* AZURE FREE TRAIL SUBSCRIPTIONS ONLY \*\*\*\*</b>
+<pre lang="...">
+az group deployment create --name VDC-Create -g VDC-Hub --template-uri https://raw.githubusercontent.com/johnstel/AzureNetworkLab/master/VDC-Networking-Master-Azure-Free-Trial-Limited.json
+</pre>
+
+<b>\*\*\*\* SPONSORED, MSDN, ENTERPRISE or PAY-GO SUBSCRIPTIONS \*\*\*\*</b>
 <pre lang="...">
 az group deployment create --name VDC-Create -g VDC-Hub --template-uri https://raw.githubusercontent.com/johnstel/AzureNetworkLab/master/VDC-Networking-Master.json
 </pre>
