@@ -7,7 +7,8 @@ sudo apt-get install nodejs-legacy -y
 
 # Clone Git repo for demo app
 sudo apt-get install git -y
-git clone https://github.com/araffe/nodejs-demoapp.git
+# git clone https://github.com/araffe/nodejs-demoapp.git
+git clone https://github.com/johnstel/nodejs-demoapp.git
 cd nodejs-demoapp/
 sudo npm install forever -g
 sudo npm install
