@@ -791,7 +791,7 @@ We'll start by configuring a number of users and groups.
 
 ## 5.1: Configure Users and Groups <a name="usersgroups"></a>
 
-**1)** To begin, we'll verify our domain name in the Azure portal. On the left hand side of the portal screen, click 'More Services' and then search for 'Azure Active Directory'. Click on 'Domain Name' and you will see the domain assigned to your Azure AD directory.
+**1)** To begin, we'll verify our domain name in the Azure portal. On the left hand side of the portal screen, click 'More Services' and then search for 'Azure Active Directory'. Click on 'Custom Domain Names' and you will see the domain assigned to your Azure AD directory.
 
 ![AAD Domain Name](https://github.com/johnstel/AzureNetworkLab/blob/master/images/DomainName.jpg "AAD Domain Name")
 
@@ -911,11 +911,11 @@ Now that we have Azure AD groups assigned to resource groups with the appropriat
 To decommission the VDC lab, simply remove the resource groups using the following commands:
 
 <pre lang="...">
-az group delete --name VDC-Hub --no-wait
-az group delete --name VDC-NVA --no-wait
-az group delete --name VDC-Spoke1 --no-wait
-az group delete --name VDC-Spoke2 --no-wait
-az group delete --name VDC-OnPrem --no-wait
+az group delete --name VDC-Hub --no-wait -y
+az group delete --name VDC-NVA --no-wait -y
+az group delete --name VDC-Spoke1 --no-wait -y
+az group delete --name VDC-Spoke2 --no-wait -y
+az group delete --name VDC-OnPrem --no-wait -y
 </pre>
 
 # Conclusion <a name="conclusion"></a>
