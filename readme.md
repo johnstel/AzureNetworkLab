@@ -797,12 +797,14 @@ We'll start by configuring a number of users and groups.
 
 **Figure 27:** Azure AD Domain Name
 
-**2)** Create three users (Fred, Bob and Dave) using the Azure CLI. Note that you will need to substitute your own domain in the user principal name.
+**2)** Create three users (Fred, Bob and Dave) using the Azure CLI. Note that this will substitute your own domain in the user principal name.
 
 <pre lang="...">
-az ad user create --display-name Fred --user-principal-name Fred@*domain*.onmicrosoft.com --password M1crosoft123
-az ad user create --display-name Bob --user-principal-name Bob@*domain*.onmicrosoft.com --password M1crosoft123
-az ad user create --display-name Dave --user-principal-name Dave@*domain*.onmicrosoft.com --password M1crosoft123
+TENANT_DOMAIN=$(az ad user list --query [*].[userPrincipalName][0] | grep '@' | sed -e 's/^.*@\(.*\)\.onmicrosoft.com.*$/\1/')
+
+az ad user create --display-name Fred --user-principal-name Fred@$TENANT_DOMAIN.onmicrosoft.com --password M1crosoft123
+az ad user create --display-name Bob --user-principal-name Bob@$TENANT_DOMAIN.onmicrosoft.com --password M1crosoft123
+az ad user create --display-name Dave --user-principal-name Dave@$TENANT_DOMAIN.onmicrosoft.com --password M1crosoft123
 </pre>
 
 **3)** Create three groups (CentralIT, AppDev and Ops) using the Azure CLI:
@@ -819,7 +821,7 @@ az ad group create --display-name Ops --mail-nickname Ops
 <b>az ad user list</b>
 </pre>
 
-The following is an example output from the previous command (do not use these object IDs - use your own!!):
+The following is an example output from the previous command (do not use these object IDs):
 <pre lang="...">
 [
   {
@@ -859,12 +861,12 @@ The following is an example output from the previous command (do not use these o
 - **Bob**: AppDev
 - **Dave**: Ops
 
-The Azure CLI can be used to do this, as follows:
+The Azure CLI can be used to do this, as follows (this fetches the ObjectId as a subcommand):
 
 <pre lang="...">
-az ad group member add --member-id *Fred's OID* --group CentralIT
-az ad group member add --member-id *Bob's OID* --group AppDev
-az ad group member add --member-id *Dave's OID* --group Ops
+az ad group member add --member-id $(az ad user list | jq '.[] | select(.displayName=="Fred") | .objectId' | tr -d '"') --group CentralIT
+az ad group member add --member-id $(az ad user list | jq '.[] | select(.displayName=="Bob") | .objectId' | tr -d '"') --group AppDev
+az ad group member add --member-id $(az ad user list | jq '.[] | select(.displayName=="Dave") | .objectId' | tr -d '"') --group Ops
 </pre>
 
 ## 5.2: Assign Users and Roles to Resource Groups <a name="roles"></a>
