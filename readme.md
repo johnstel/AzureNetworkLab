@@ -426,7 +426,7 @@ Our NSG will define two inbound rules - one for HTTP and another for TCP port 30
 
 - Name: *Allow-http*
 - Priority: *100*
-- Source port range: *Any*
+- Source port range: *(\*) Any*
 - Destination port range: *80*
 - Action: *Allow*
 
@@ -438,7 +438,7 @@ Our NSG will define two inbound rules - one for HTTP and another for TCP port 30
 
 - Name: *Allow-3000*
 - Priority: *110*
-- Source port range: *Any*
+- Source port range: *(\*) Any*
 - Destination port range: *3000*
 - Action: *Allow*
 
