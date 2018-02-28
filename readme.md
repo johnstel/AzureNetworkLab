@@ -1,4 +1,6 @@
-# Azure Virtual Data Center Lab - John.Stelmaszek@microsoft.com
+# Azure Virtual Data Center Lab
+Updated and maintained by:
+John.Stelmaszek@microsoft.com
 
 # Contents
 
